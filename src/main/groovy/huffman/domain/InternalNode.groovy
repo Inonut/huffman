@@ -2,33 +2,22 @@ package huffman.domain;
 
 public class InternalNode extends Node {
 	
-	private Node leftChild
-	
-	private Node rightChild
-	
-	public InternalNode(Node leftChild, Node rightChild) {
-		this(leftChild , rightChild, leftChild.frequency+rightChild.frequency);
+	private List<Node> children
+
+	InternalNode(List<Node> children) {
+		this(children, children*.frequency.sum() as int)
 	}
-	
-	public InternalNode(Node leftChild, Node rightChild, int frequency) {
-		this.leftChild = leftChild
-		this.rightChild = rightChild
+
+	InternalNode(List<Node> children, int frequency) {
+		this.children = children
 		this.frequency = frequency
 	}
 
-	public Node getLeftChild() {
-		return leftChild;
+	List<Node> getChildren() {
+		return children
 	}
 
-	public void setLeftChild(Node leftChild) {
-		this.leftChild = leftChild;
-	}
-
-	public Node getRightChild() {
-		return rightChild;
-	}
-
-	public void setRightChild(Node rightChild) {
-		this.rightChild = rightChild;
+	void setChildren(List<Node> children) {
+		this.children = children
 	}
 }
