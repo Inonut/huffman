@@ -8,11 +8,9 @@ import huffman.util.BitInputStream
 class Main {
 
     public static void main(String ...args){
-        BitInputStream bitInputStream = new BitInputStream(new FileInputStream(new File("F:\\MEGA\\Proiecte\\Huffman3\\src\\huffman\\algotithm\\help\\Tree.java")))
 
-        (1..100).each {
-            println bitInputStream.readBit(8)
-        }
+        def list = [[value: 1],[value: 1],[value: 1],[value: 1],[value: 1],[value: 1]]
 
+        println list*.value.sum()
     }
 }

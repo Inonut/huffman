@@ -1,8 +1,4 @@
-package huffman.domain;
-
-import java.util.List;
-
-import huffman.util.Util;
+package huffman.domain
 
 public class Leaf extends Node {
 	
