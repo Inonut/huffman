@@ -1,7 +1,11 @@
 package huffman
 
-import groovyx.gpars.group.DefaultPGroup
+import groovyx.gpars.GParsPool
 
+import groovyx.gpars.group.DefaultPGroup
+import huffman.algorithm.HuffmanDecoder
+import huffman.algorithm.HuffmanEncoder
+import huffman.util.Util
 
 
 /**
@@ -13,7 +17,7 @@ class Main {
     def static count = 0
 
     def static fibAsync(int n){
-       // println n
+        //println group.threadPool.poolSize
         if(n <=2 ){
             return 1
         } else {
@@ -38,18 +42,40 @@ class Main {
             return 1
         } else {
             return fibSync(n-2) + fibSync(n-1)
-
         }
     }
 
 
     public static void main(String ...argss){
 
-        def n = 40
+        File fin = new File("D:\\jetBrains\\huffman\\src\\main\\resources\\testCompress.txt")
+        File fout = new File("D:\\jetBrains\\huffman\\src\\main\\resources\\testCompress.huff_txt")
+        File fout2 = new File("D:\\jetBrains\\huffman\\src\\main\\resources\\testDecompress.txt")
+
+        HuffmanEncoder encoder = new HuffmanEncoder(fin, fout, 2)
+        encoder.compress()
+
+        HuffmanDecoder decoder = new HuffmanDecoder(fout, fout2, 2)
+        decoder.decompress()
+
+      /*  def n = 38
 
         def t
 
+        t = System.currentTimeMillis()
+        Closure fib = {number ->
+            if (number <= 2) {
+                return 1
+            }
+            forkOffChild(number - 1)
+            forkOffChild(number - 2)
+            return getChildrenResults().sum() as int
+        }
 
+        GParsPool.withPool(200) {
+            println GParsPool.runForkJoin(n, fib)
+        }
+        println "3----- ${System.currentTimeMillis() - t}"
 
         t = System.currentTimeMillis()
         println fibAsync(n)
@@ -58,7 +84,15 @@ class Main {
         t = System.currentTimeMillis()
         println fibSync(n)
         println "1----- ${System.currentTimeMillis() - t}"
+*/
 
+       /* t = System.currentTimeMillis()
+        GParsPool.withPool(200) {
+            println ((1..100).collectParallel { Thread.sleep(10); return it;}.sumParallel())
+        }
+        println "0----- ${System.currentTimeMillis() - t}"
+
+*/
 
     }
 }

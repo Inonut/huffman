@@ -2,6 +2,8 @@ package huffman.algorithm.help
 
 import huffman.domain.InternalNode
 import huffman.domain.Leaf
+import huffman.domain.Node
+import huffman.util.BusinessConstant
 
 /**
  * Created by Dragos on 29.03.2016.
@@ -9,14 +11,14 @@ import huffman.domain.Leaf
 class Tree {
 
     private InternalNode root
-    private List<Leaf> leafs
+    private Leaf[] leafs
 
     public Tree(InternalNode root) {
         this.root = root
 
-        leafs = []
-        makeCodes(root, [])
-        leafs.sort{a,b->a.getSymbol()-b.getSymbol()}
+        leafs = new Leaf[BusinessConstant.NR_CHAR]
+        makeCodes(this.root as Node, [])
+        //leafs.sort{a,b->a.getSymbol()-b.getSymbol()}
     }
 
 
@@ -26,7 +28,7 @@ class Tree {
             Leaf leaf = node as Leaf
 
             leaf.code = code.clone() as List
-            leafs.add(leaf);
+            leafs[leaf.symbol] = leaf
         } else if (node instanceof InternalNode) {
             InternalNode internalNode = node as InternalNode
 
@@ -39,15 +41,10 @@ class Tree {
     }
 
     public List<Integer> getCode(int symbol) {
-        return leafs[symbol].getCode();
+        return leafs[symbol].code;
     }
 
-    public InternalNode getRoot() {
-        return root;
-    }
-
-
-    public void setRoot(InternalNode root) {
-        this.root = root;
+    InternalNode getRoot() {
+        return root
     }
 }

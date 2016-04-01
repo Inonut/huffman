@@ -3,8 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/huffman.iml" filepath="$PROJECT_DIR$/.idea/modules/huffman.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/huffman_main.iml" filepath="$PROJECT_DIR$/.idea/modules/huffman_main.iml" group="huffman" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/huffman_test.iml" filepath="$PROJECT_DIR$/.idea/modules/huffman_test.iml" group="huffman" />
     </modules>
   </component>
 </project>
