@@ -14,7 +14,6 @@ class Util {
             } else {
                 return [val%2]
             }
-
         }
     }
 }

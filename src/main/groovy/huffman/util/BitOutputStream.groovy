@@ -1,8 +1,4 @@
-package huffman.util;
-
-import java.io.IOException;
-import java.io.OutputStream;
-
+package huffman.util
 
 class BitOutputStream extends BufferedOutputStream{
 	
@@ -31,11 +27,8 @@ class BitOutputStream extends BufferedOutputStream{
 	}
 
 	public void flushBit() {
-		if(nbBits>0){
-			super.write(currentByte)
-			currentByte = 0
-			nbBits = 0
-		}
+		int k = nbBits
+		(k..7).each {writeBit(0)}
 	}
 	
 }

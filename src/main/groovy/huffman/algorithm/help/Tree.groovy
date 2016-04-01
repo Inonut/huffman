@@ -17,8 +17,7 @@ class Tree {
         this.root = root
 
         leafs = new Leaf[BusinessConstant.NR_CHAR]
-        makeCodes(this.root as Node, [])
-        //leafs.sort{a,b->a.getSymbol()-b.getSymbol()}
+        makeCodes(this.root, [])
     }
 
 
@@ -41,7 +40,7 @@ class Tree {
     }
 
     public List<Integer> getCode(int symbol) {
-        return leafs[symbol].code;
+        return leafs[symbol].code
     }
 
     InternalNode getRoot() {

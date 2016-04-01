@@ -1,4 +1,4 @@
-package huffman.algorithm
+package huffman.algorithm.impl
 
 import huffman.algorithm.help.Frequency
 import huffman.algorithm.help.Tree
@@ -10,7 +10,7 @@ import huffman.util.BusinessConstant
 import huffman.util.Util;
 
 
-public final class HuffmanDecoder{
+public final class HuffmanAdaptiveDecoder {
 	
 	private BitInputStream input
 	private OutputStream output
@@ -22,7 +22,7 @@ public final class HuffmanDecoder{
 	private int base
 	private int nrBitsOfBase
 	
-	public HuffmanDecoder(File fin, File fout, int base) {
+	public HuffmanAdaptiveDecoder(File fin, File fout, int base) {
 		this.fin = fin
 		this.fout = fout
 		this.base = base
@@ -33,6 +33,7 @@ public final class HuffmanDecoder{
 		InternalNode currentNode = tree.getRoot();
 		while (true) {
 			int bit = input.readBit(nrBitsOfBase);
+
 			Node nextNode = null;
 			if(bit != -1) {
 				nextNode = currentNode.children[bit]
@@ -58,14 +59,14 @@ public final class HuffmanDecoder{
 	
 	
 	private void decompressOn(File fin, File fout) throws IOException{
-		
+
 		Frequency frequency = new Frequency();
+		Arrays.fill(frequency.frequencies, 1)
 		this.tree = frequency.buildTree(base);
 		int nbCh = 0;
 		while (true) {
 			int symbol = this.read();
-			//println symbol
-			if (symbol == -1) {
+			if (symbol == -1 || symbol == BusinessConstant.EOF) {
 				break;
 			}
 			output.write(symbol);
@@ -75,10 +76,9 @@ public final class HuffmanDecoder{
 			if (nbCh % BusinessConstant.RESET_VALUE == 0){
 				this.tree = frequency.buildTree(base);
 				frequency = new Frequency();
+				Arrays.fill(frequency.frequencies, 1)
 				nbCh = 0;
 			}
 		}
 	}
-
-	
 }

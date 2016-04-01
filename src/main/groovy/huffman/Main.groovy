@@ -1,12 +1,8 @@
 package huffman
 
-import groovyx.gpars.GParsPool
-
 import groovyx.gpars.group.DefaultPGroup
-import huffman.algorithm.HuffmanDecoder
-import huffman.algorithm.HuffmanEncoder
-import huffman.util.Util
-
+import huffman.algorithm.impl.HuffmanAdaptiveDecoder
+import huffman.algorithm.impl.HuffmanAdaptiveEncoder
 
 /**
  * Created by Dragos on 29.03.2016.
@@ -48,16 +44,18 @@ class Main {
 
     public static void main(String ...argss){
 
-        File fin = new File("D:\\jetBrains\\huffman\\src\\main\\resources\\testCompress.txt")
-        File fout = new File("D:\\jetBrains\\huffman\\src\\main\\resources\\testCompress.huff_txt")
-        File fout2 = new File("D:\\jetBrains\\huffman\\src\\main\\resources\\testDecompress.txt")
+        String path = "F:\\MEGA\\IdeaProjects\\huffman\\src\\main\\resources\\"
 
-        HuffmanEncoder encoder = new HuffmanEncoder(fin, fout, 3)
+        File fin = new File("${path}testMusic.mp3")
+        File fout = new File("${path}testMusic.huff_png")
+        File fout2 = new File("${path}testMusic2.mp3")
+
+        HuffmanAdaptiveEncoder encoder = new HuffmanAdaptiveEncoder(fin, fout, 2)
         encoder.compress()
 
         println "------------"
 
-        HuffmanDecoder decoder = new HuffmanDecoder(fout, fout2, 3)
+        HuffmanAdaptiveDecoder decoder = new HuffmanAdaptiveDecoder(fout, fout2, 2)
         decoder.decompress()
 
 

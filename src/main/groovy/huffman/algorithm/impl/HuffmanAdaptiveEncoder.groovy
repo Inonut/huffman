@@ -1,15 +1,12 @@
-package huffman.algorithm
+package huffman.algorithm.impl
 
 import huffman.algorithm.help.Frequency
 import huffman.algorithm.help.Tree
 import huffman.util.BitOutputStream
 import huffman.util.BusinessConstant
-import huffman.util.Util;
+import huffman.util.Util
 
-import java.io.*;
-
-
-public class HuffmanEncoder {
+public class HuffmanAdaptiveEncoder {
 	
 	private InputStream input
 	private BitOutputStream output
@@ -21,7 +18,7 @@ public class HuffmanEncoder {
 	private int base
 	private int nrBitsOfBase
 	
-	public HuffmanEncoder(File fin, File fout, int base) {
+	public HuffmanAdaptiveEncoder(File fin, File fout, int base) {
 		this.fin = fin
 		this.fout = fout
 		this.base = base
@@ -47,13 +44,13 @@ public class HuffmanEncoder {
 	}
 	
 	private void compressOn(File fin, File fout) {
-		
+
 		Frequency frequency = new Frequency()
+		Arrays.fill(frequency.frequencies, 1)
 		this.tree = frequency.buildTree(base)
 		int nbCh = 0
 		while (true) {
 			int symbol = input.read()
-			//println symbol
 			if (symbol == -1){
 				break
 			}
@@ -64,9 +61,13 @@ public class HuffmanEncoder {
 			if (nbCh % BusinessConstant.RESET_VALUE == 0){
 				this.tree = frequency.buildTree(base)
 				frequency = new Frequency()
+				Arrays.fill(frequency.frequencies, 1)
 				nbCh = 0
 			}
 		}
+
+		this.write(BusinessConstant.EOF)
+		this.output.flushBit()
 	}
 
 }
