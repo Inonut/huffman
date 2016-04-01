@@ -6,7 +6,8 @@ import huffman.domain.InternalNode
 import huffman.domain.Leaf
 import huffman.domain.Node
 import huffman.util.BitInputStream
-import huffman.util.BusinessConstant;
+import huffman.util.BusinessConstant
+import huffman.util.Util;
 
 
 public final class HuffmanDecoder{
@@ -19,17 +20,19 @@ public final class HuffmanDecoder{
 	private File fin
 	private File fout
 	private int base
+	private int nrBitsOfBase
 	
 	public HuffmanDecoder(File fin, File fout, int base) {
 		this.fin = fin
 		this.fout = fout
 		this.base = base
+		this.nrBitsOfBase = Util.toBase2(base-1).size()
 	}
 	
 	private int read() throws IOException {
 		InternalNode currentNode = tree.getRoot();
 		while (true) {
-			int bit = input.read();
+			int bit = input.readBit(nrBitsOfBase);
 			Node nextNode = null;
 			if(bit != -1) {
 				nextNode = currentNode.children[bit]
@@ -61,6 +64,7 @@ public final class HuffmanDecoder{
 		int nbCh = 0;
 		while (true) {
 			int symbol = this.read();
+			//println symbol
 			if (symbol == -1) {
 				break;
 			}
@@ -74,8 +78,6 @@ public final class HuffmanDecoder{
 				nbCh = 0;
 			}
 		}
-
-		output.flush()
 	}
 
 	

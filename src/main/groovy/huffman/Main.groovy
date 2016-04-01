@@ -52,11 +52,14 @@ class Main {
         File fout = new File("D:\\jetBrains\\huffman\\src\\main\\resources\\testCompress.huff_txt")
         File fout2 = new File("D:\\jetBrains\\huffman\\src\\main\\resources\\testDecompress.txt")
 
-        HuffmanEncoder encoder = new HuffmanEncoder(fin, fout, 2)
+        HuffmanEncoder encoder = new HuffmanEncoder(fin, fout, 3)
         encoder.compress()
 
-        HuffmanDecoder decoder = new HuffmanDecoder(fout, fout2, 2)
+        println "------------"
+
+        HuffmanDecoder decoder = new HuffmanDecoder(fout, fout2, 3)
         decoder.decompress()
+
 
       /*  def n = 38
 

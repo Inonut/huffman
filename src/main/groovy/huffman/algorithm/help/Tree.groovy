@@ -35,7 +35,7 @@ class Tree {
             internalNode.children.eachWithIndex{ Node entry, int i ->
                 code += i
                 makeCodes(entry, code)
-                code -= i
+                code.remove(code.size()-1)
             }
         }
     }

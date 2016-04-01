@@ -19,15 +19,23 @@ public class HuffmanEncoder {
 	private File fin
 	private File fout
 	private int base
+	private int nrBitsOfBase
 	
 	public HuffmanEncoder(File fin, File fout, int base) {
 		this.fin = fin
 		this.fout = fout
 		this.base = base
+		this.nrBitsOfBase = Util.toBase2(base-1).size()
 	}
 	
 	private void write(int symbol) throws IOException {
-		tree.getCode(symbol).forEach { Util.toBase2(it).each {output.writeBit(it)}}
+		tree.getCode(symbol).forEach {
+			List<Integer> bits = Util.toBase2(it)
+			while (bits.size() < nrBitsOfBase){
+				bits = [0] + bits
+			}
+			bits.each {output.writeBit(it)}
+		}
 	}
 	
 	public void compress(){
@@ -45,6 +53,7 @@ public class HuffmanEncoder {
 		int nbCh = 0
 		while (true) {
 			int symbol = input.read()
+			//println symbol
 			if (symbol == -1){
 				break
 			}
