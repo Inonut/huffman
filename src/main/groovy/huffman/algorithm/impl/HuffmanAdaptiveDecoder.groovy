@@ -1,5 +1,6 @@
 package huffman.algorithm.impl
 
+import huffman.algorithm.Huffman
 import huffman.algorithm.help.Frequency
 import huffman.algorithm.help.Tree
 import huffman.domain.InternalNode
@@ -7,78 +8,86 @@ import huffman.domain.Leaf
 import huffman.domain.Node
 import huffman.util.BitInputStream
 import huffman.util.BusinessConstant
-import huffman.util.Util;
+import huffman.util.Util
+
+/**
+ * Created by Dragos on 01.04.2016.
+ */
+class HuffmanAdaptiveDecoder implements Huffman{
+
+    private BitInputStream input
+    private OutputStream output
+
+    private Tree tree
+    private Frequency frequency
+
+    private File fin
+    private File fout
+    private int base
+    private int nrBitsOfBase
+    private int nbCh
+
+    public HuffmanAdaptiveDecoder(File fin, File fout, int base) {
+        this.fin = fin
+        this.fout = fout
+        this.base = base
+        this.nrBitsOfBase = Util.toBase2(base-1).size()
+    }
 
 
-public final class HuffmanAdaptiveDecoder {
-	
-	private BitInputStream input
-	private OutputStream output
-	
-	private Tree tree
-	
-	private File fin
-	private File fout
-	private int base
-	private int nrBitsOfBase
-	
-	public HuffmanAdaptiveDecoder(File fin, File fout, int base) {
-		this.fin = fin
-		this.fout = fout
-		this.base = base
-		this.nrBitsOfBase = Util.toBase2(base-1).size()
-	}
-	
-	private int read() throws IOException {
-		InternalNode currentNode = tree.getRoot();
-		while (true) {
-			int bit = input.readBit(nrBitsOfBase);
+    @Override
+    int read() {
+        InternalNode currentNode = tree.getRoot();
+        while (true) {
+            int bit = input.readBit(nrBitsOfBase);
 
-			Node nextNode = null;
-			if(bit != -1) {
-				nextNode = currentNode.children[bit]
-			}else {
-				return -1;
-			}
-			
-			if (nextNode instanceof Leaf){
-				return (nextNode as Leaf).symbol;
-			} else if (nextNode instanceof InternalNode){
-				currentNode = nextNode as InternalNode;
-			} 
-		}
-	}
-	
-	public void decompress() throws IOException {
-		output = new BufferedOutputStream(new FileOutputStream(fout));
-		input = new BitInputStream(new FileInputStream(fin));
-		this.decompressOn(fin, fout);
-		output.close();
-		input.close();
-	}
-	
-	
-	private void decompressOn(File fin, File fout) throws IOException{
+            Node nextNode = null;
+            if(bit != -1) {
+                nextNode = currentNode.children[bit]
+            }else {
+                return -1;
+            }
 
-		Frequency frequency = new Frequency();
-		Arrays.fill(frequency.frequencies, 1)
-		this.tree = frequency.buildTree(base);
-		int nbCh = 0;
-		while (true) {
-			int symbol = this.read();
-			if (symbol == -1 || symbol == BusinessConstant.EOF) {
-				break;
-			}
-			output.write(symbol);
-			
-			frequency.increment(symbol);
-			nbCh++;
-			if (nbCh % BusinessConstant.RESET_VALUE == 0){
-				this.tree = frequency.buildTree(base);
-				frequency = new Frequency();
-				Arrays.fill(frequency.frequencies, 1)
-				nbCh = 0;
-			}
-		}
-	}
+            if (nextNode instanceof Leaf){
+                return (nextNode as Leaf).symbol;
+            } else if (nextNode instanceof InternalNode){
+                currentNode = nextNode as InternalNode;
+            }
+        }
+    }
+
+    @Override
+    void write(int symbol) {
+        output.write(symbol)
+    }
+
+    @Override
+    void onStart() {
+        output = new BufferedOutputStream(new FileOutputStream(fout));
+        input = new BitInputStream(new FileInputStream(fin));
+
+        nbCh = 0
+        frequency = new Frequency()
+        Arrays.fill(frequency.frequencies, 1)
+        this.tree = frequency.buildTree(base)
+    }
+
+    @Override
+    void onComplete() {
+        output.close()
+        input.close()
+    }
+
+    @Override
+    void onAfterWrite(int symbol) {
+        frequency.increment(symbol)
+        if ((++nbCh) % BusinessConstant.RESET_VALUE == 0){
+            nbCh = 0
+            this.tree = frequency.buildTree(base)
+            frequency = new Frequency()
+            Arrays.fill(frequency.frequencies, 1)
+        }
+    }
+
+
 }

@@ -13,11 +13,12 @@ trait Huffman {
         while (true) {
             onBeforeRead()
             int symbol = read()
+            //println symbol
             if (symbol == -1 || symbol == BusinessConstant.EOF){
                 break
             }
             write(symbol)
-            onAfterWrite()
+            onAfterWrite(symbol)
         }
         onComplete()
     }
@@ -28,7 +29,7 @@ trait Huffman {
 
     void onBeforeRead(){}
 
-    void onAfterWrite(){}
+    void onAfterWrite(int symbol){}
 
     abstract int read()
 

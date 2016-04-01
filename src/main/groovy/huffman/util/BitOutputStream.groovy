@@ -27,8 +27,7 @@ class BitOutputStream extends BufferedOutputStream{
 	}
 
 	public void flushBit() {
-		int k = nbBits
-		(k..7).each {writeBit(0)}
+		for (int k = nbBits; k<8;k++){ writeBit(0) }
 	}
 	
 }
