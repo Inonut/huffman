@@ -1,5 +1,6 @@
 package huffman
 
+import huffman.algorithm.Huffman
 import huffman.algorithm.impl.HuffmanAdaptiveDecoder
 import huffman.algorithm.impl.HuffmanAdaptiveEncoder
 
@@ -14,17 +15,19 @@ class Main {
 
         String path = "F:\\MEGA\\IdeaProjects\\huffman\\src\\main\\resources\\"
 
-        File fin = new File("${path}log1.txt")
-        File fout = new File("${path}log1.huff_png")
-        File fout2 = new File("${path}log12.txt")
+        File fin = new File("${path}testMusic.mp3")
+        File fout = new File("${path}testMusic.huff_png")
+        File fout2 = new File("${path}testMusic2.mp3")
 
-        HuffmanAdaptiveEncoder encoder = new HuffmanAdaptiveEncoder(fin, fout, 4)
+        Huffman encoder = new HuffmanAdaptiveEncoder(fin, fout, 2)
         encoder.execute()
 
         println "------------"
 
-        HuffmanAdaptiveDecoder decoder = new HuffmanAdaptiveDecoder(fout, fout2, 4)
+        Huffman decoder = new HuffmanAdaptiveDecoder(fout, fout2, 2)
         decoder.execute()
+
+        //println Integer.toString(2, 2).split("").collect()
 
     }
 }

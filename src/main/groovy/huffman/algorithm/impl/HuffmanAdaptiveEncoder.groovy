@@ -42,11 +42,12 @@ class HuffmanAdaptiveEncoder implements Huffman{
     @Override
     void write(int symbol) {
         tree.getCode(symbol).forEach {
-            List<Integer> bits = Util.toBase2(it)
+            List<Integer> bits = Integer.toString(it, 2).split("").collect {it as int}
             while (bits.size() < nrBitsOfBase){
                 bits = [0] + bits
             }
             bits.each {output.writeBit(it)}
+            //output.writeBit(it)
         }
     }
 
@@ -74,8 +75,7 @@ class HuffmanAdaptiveEncoder implements Huffman{
     @Override
     void onAfterWrite(int symbol) {
         frequency.increment(symbol)
-        if ((++nbCh) % BusinessConstant.RESET_VALUE == 0){
-            nbCh = 0
+        if (Util.isPowerOf2(++nbCh)){
             this.tree = frequency.buildTree(base)
             frequency = new Frequency()
             Arrays.fill(frequency.frequencies, 1)

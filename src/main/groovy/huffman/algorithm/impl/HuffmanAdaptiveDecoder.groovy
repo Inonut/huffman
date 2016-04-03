@@ -81,8 +81,7 @@ class HuffmanAdaptiveDecoder implements Huffman{
     @Override
     void onAfterWrite(int symbol) {
         frequency.increment(symbol)
-        if ((++nbCh) % BusinessConstant.RESET_VALUE == 0){
-            nbCh = 0
+        if (Util.isPowerOf2(++nbCh)){
             this.tree = frequency.buildTree(base)
             frequency = new Frequency()
             Arrays.fill(frequency.frequencies, 1)

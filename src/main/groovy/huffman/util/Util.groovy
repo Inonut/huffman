@@ -16,4 +16,8 @@ class Util {
             }
         }
     }
+
+    def static boolean isPowerOf2(int x) {
+        return x > 0 && (x & -x) == x
+    }
 }
